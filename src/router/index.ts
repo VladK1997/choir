@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import Songs from '../views/Songs.vue';
+import SongsList from "@/components/SongsList/SongsList.vue";
+import SongEditor from "@/components/SongEditor/SongEditor.vue";
 
 Vue.use(VueRouter)
 
@@ -9,6 +12,23 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: "/songs",
+    name: "",
+    component: Songs,
+    children: [
+      {
+        path: "",
+        name: "songsList",
+        component: SongsList
+      },
+      {
+        path: "editor/:id?",
+        name: "SongEditor",
+        component: SongEditor
+      }
+    ]
   },
   {
     path: '/about',
