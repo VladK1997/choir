@@ -35,3 +35,4 @@ export default class WordsModal extends Vue {
 }
 
 </script>
+<style src="./WordsModal.scss" lang="scss"/>

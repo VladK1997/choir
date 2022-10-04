@@ -11,6 +11,7 @@
               v-for="item in items"
               :link="item.link"
               :key="item.title"
+              class="modal-items__item"
           >
             {{item.title}}
           </BntTab>
@@ -47,9 +48,11 @@ export default class ItemsModal extends Vue {
 <style lang="scss">
 .modal-items{
   &__items {
-    display: grid;
-    grid-gap: 16px;
-    grid-template-columns: repeat(auto-fill, 70px);
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__item{
+    margin-left: 16px;
   }
 }
 </style>

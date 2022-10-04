@@ -2,6 +2,7 @@
 <div class="song-editor">
   <h1 class="song-editor__title">Song Editor</h1>
   <form class="">
+    <p class="song-editor__error" v-if="error.length">{{ error }}</p>
     <label>
       <input v-model="song.title" type="text" placeholder="Title">
     </label>
@@ -73,6 +74,7 @@ export default class SongEditor extends Vue {
     pdf5_file: null,
     words: ""
   }
+  error = "";
   mapSong(song: any): any {
       let mappedSong: any = {};
       mappedSong.title = song.title;
@@ -84,13 +86,21 @@ export default class SongEditor extends Vue {
         mappedSong[titleKey] = item.title;
         mappedSong[fileKey] = item.link;
       });
-    console.log(mappedSong);
     return mappedSong;
   }
   uploadSong() {
+    if (!this.song.title.length) {
+      this.error = "Please enter the title";
+      return;
+    }
     SongsModule.uploadSong(this.song)
         .then((data) => {
-          console.log(data);
+          if (data.status === 201) {
+            this.$router.push("/songs");
+          }
+          else {
+            this.error = data.message;
+          }
         })
   }
   get songs(): any {
@@ -101,7 +111,7 @@ export default class SongEditor extends Vue {
   }
   @Watch("$route", { immediate: true, deep: true})
   protected onRouteChange(newValue: any) {
-    if (newValue.params.id.length) {
+    if (newValue.params.id && newValue.params.id.length) {
       const index = newValue.params.id;
       Object.assign(this.song, this.mapSong(this.songs[index]));
     }

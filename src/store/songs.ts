@@ -51,12 +51,17 @@ class SongsModule extends VuexModule {
             //@ts-ignore
             form_data.append(key, payload[key] || "");
         });
-        fetch(`${process.env.VUE_APP_BASE_URL}/songs/create`, {
+        return fetch(`${process.env.VUE_APP_BASE_URL}/songs/create`, {
             method: 'POST',
             body: form_data,
             cache: 'no-cache',
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
         })
-            .then(data => data)
+            .then(data => {
+                return data
+            })
             .finally(() => {
                 context.commit("setIsSongLoading", false);
             })
