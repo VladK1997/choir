@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkchoir"]=self["webpackChunkchoir"]||[]).push([[443],{2323:function(n,t,u){u.r(t),u.d(t,{default:function(){return c}});var s=function(){var n=this;n._self._c;return n._m(0)},r=[function(){var n=this,t=n._self._c;return t("div",{staticClass:"about"},[t("h1",[n._v("This is an about page")])])}],e=u(1001),i={},a=(0,e.Z)(i,s,r,!1,null,null,null),c=a.exports}}]);
+//# sourceMappingURL=about.5763ecbe.js.map
