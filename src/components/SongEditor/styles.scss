@@ -2,12 +2,17 @@
   background-color: #b6cad2;
   padding: 20px;
   border-radius: 10px;
+  &__topbar {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
   label {
     display: block;
     margin: 12px 0;
   }
   &__title {
-    margin-bottom: 24px;
+    margin-right: auto;
   }
   &__error {
     color: #D60C31;

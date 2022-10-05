@@ -1,10 +1,11 @@
 <template>
   <div class="songs-list">
+    <Button type="router-link" to="/">
+      Home
+    </Button>
     <div class="songs-list__topbar">
-      <Button>
-        <router-link to="songs/editor">
-          Add New
-        </router-link>
+      <Button type="router-link" to="songs/editor">
+        Add New
       </Button>
     </div>
     <div class="songs-list__items">

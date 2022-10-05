@@ -1,6 +1,8 @@
 <template>
   <header class="header">
-    <img :src="logo" alt="logo">
+    <router-link to="/" class="header__logo">
+      <img :src="logo" alt="logo">
+    </router-link>
   </header>
 </template>
 <script>

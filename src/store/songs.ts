@@ -21,6 +21,7 @@ interface ISongEdit {
     pdf5_title: string;
     pdf5_file: Blob | null;
     words: string;
+    id: string;
 }
 @Module({
     namespaced: true,
@@ -43,6 +44,48 @@ class SongsModule extends VuexModule {
             })
     }
     @Action
+    async updateSong(payload: ISongEdit): Promise<any> {
+        const { context } = this;
+        context.commit("setIsSongLoading", true);
+        const form_data = new FormData();
+        Object.keys(payload).forEach((key) => {
+            //@ts-ignore
+            form_data.append(key, payload[key] || "");
+        });
+        return fetch(`${process.env.VUE_APP_BASE_URL}/songs/update`, {
+            method: 'PUT',
+            body: form_data,
+            cache: 'no-cache',
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
+        })
+            .then(data => {
+                return data
+            })
+            .finally(() => {
+                context.commit("setIsSongLoading", false);
+            })
+    }
+    @Action
+    async deleteSong(id: string): Promise<any> {
+        const { context } = this;
+        // context.commit("setIsSongLoading", true);
+        return await fetch(`${process.env.VUE_APP_BASE_URL}/songs/delete?id=${id}`, {
+            method: 'DELETE',
+            cache: 'no-cache',
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
+        })
+            .then(data => {
+                return data
+            })
+            .finally(() => {
+                context.commit("setIsSongLoading", false);
+            })
+    }
+    @Action
     async uploadSong(payload: ISongEdit): Promise<any> {
         const { context } = this;
         context.commit("setIsSongLoading", true);
@@ -51,7 +94,7 @@ class SongsModule extends VuexModule {
             //@ts-ignore
             form_data.append(key, payload[key] || "");
         });
-        return fetch(`${process.env.VUE_APP_BASE_URL}/songs/create`, {
+        return await fetch(`${process.env.VUE_APP_BASE_URL}/songs/create`, {
             method: 'POST',
             body: form_data,
             cache: 'no-cache',

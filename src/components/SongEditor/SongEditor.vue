@@ -1,7 +1,12 @@
 <template>
 <div class="song-editor">
-  <h1 class="song-editor__title">Song Editor</h1>
-  <form class="">
+  <div class="song-editor__topbar">
+    <h1 class="song-editor__title">Song Editor</h1>
+    <Button ui-type="danger" type="button" @click="deleteSong" v-if="!isNew">
+      <Icon icon="trash" />
+    </Button>
+  </div>
+  <div class="">
     <p class="song-editor__error" v-if="error.length">{{ error }}</p>
     <label>
       <input v-model="song.title" type="text" placeholder="Title">
@@ -40,8 +45,8 @@
     <label>
       <textarea placeholder="Words" v-model="song.words"></textarea>
     </label>
-    <Button type="button" @click="uploadSong">Save</Button>
-  </form>
+    <Button type="button" @click="save">Save</Button>
+  </div>
 </div>
 </template>
 <script lang="ts">
@@ -50,14 +55,14 @@ import Vue from "vue";
 import SongsModule from "@/store/songs";
 import Button from "@/components/Button/Button.vue";
 import { Watch } from "vue-property-decorator";
-import {makeCopy} from "@/helpers/common";
-import Loading from "@/components/Loading/Loading.vue";
+import Icon from "@/components/Icon/Icon.vue";
 
 @Component({
   name: "SongEditor",
-  components: {Button},
+  components: {Icon, Button},
 })
 export default class SongEditor extends Vue {
+  isNew = true;
   song = {
     title: "",
     gtp: null,
@@ -71,7 +76,8 @@ export default class SongEditor extends Vue {
     pdf4_file: null,
     pdf5_title: "",
     pdf5_file: null,
-    words: ""
+    words: "",
+    id: "",
   }
   error = "";
   mapSong(song: any): any {
@@ -79,6 +85,7 @@ export default class SongEditor extends Vue {
       mappedSong.title = song.title;
       mappedSong.words = song.words;
       mappedSong.gtp = song.gtp;
+      mappedSong.id = song.id;
       song.pdf.forEach((item: any, index: number) => {
         const titleKey = `pdf${index+1}_title`;
         const fileKey = `pdf${index+1}_file`
@@ -87,20 +94,38 @@ export default class SongEditor extends Vue {
       });
     return mappedSong;
   }
-  uploadSong() {
+  async deleteSong(): Promise<void> {
+    const data = await SongsModule.deleteSong(this.song.id);
+    if (data.status > 199 && data.status < 300) {
+      this.$router.push("/songs");
+    }
+  }
+  async save(): Promise<void> {
+    let data = {
+      status: 403,
+      message: "Error Happened"
+    }
     if (!this.song.title.length) {
       this.error = "Please enter the title";
       return;
     }
-    SongsModule.uploadSong(this.song)
-        .then((data) => {
-          if (data.status === 201) {
-            this.$router.push("/songs");
-          }
-          else {
-            this.error = data.message;
-          }
-        })
+    if(this.isNew) {
+      data = await this.uploadSong();
+    } else {
+      data = await this.updateSong();
+    }
+    if (data.status > 199 && data.status < 300) {
+      this.$router.push("/songs");
+    }
+    else {
+      this.error = data.message;
+    }
+  }
+  async uploadSong(): Promise<any> {
+    return await SongsModule.uploadSong(this.song);
+  }
+  async updateSong(): Promise<any> {
+    return await SongsModule.updateSong(this.song)
   }
   get songs(): any {
     return SongsModule.getSongs;
@@ -109,7 +134,8 @@ export default class SongEditor extends Vue {
   protected onRouteChange(newValue: any) {
     if (newValue.params.id && newValue.params.id.length) {
       const index = newValue.params.id;
-      Object.assign(this.song, this.mapSong(this.songs[index]));
+      this.song = this.mapSong(this.songs[index]);
+      this.isNew = false;
     }
   }
  mounted(): void {
