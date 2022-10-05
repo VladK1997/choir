@@ -5,4 +5,9 @@ module.exports = defineConfig({
   transpileDependencies: true,
   publicPath: "/choir",
   outputDir: path.resolve(__dirname, "./docs"),
+  pwa: {
+    workboxOptions: {
+      exclude: [/_redirects/]
+    }
+  }
 })
