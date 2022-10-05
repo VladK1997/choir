@@ -52,7 +52,7 @@ class SongsModule extends VuexModule {
             //@ts-ignore
             form_data.append(key, payload[key] || "");
         });
-        return fetch(`${process.env.VUE_APP_BASE_URL}/songs/update`, {
+        return fetch(`${process.env.VUE_APP_BASE_URL}/songs`, {
             method: 'PUT',
             body: form_data,
             cache: 'no-cache',
@@ -71,7 +71,7 @@ class SongsModule extends VuexModule {
     async deleteSong(id: string): Promise<any> {
         const { context } = this;
         // context.commit("setIsSongLoading", true);
-        return await fetch(`${process.env.VUE_APP_BASE_URL}/songs/delete?id=${id}`, {
+        return await fetch(`${process.env.VUE_APP_BASE_URL}/songs?id=${id}`, {
             method: 'DELETE',
             cache: 'no-cache',
             headers: {
@@ -94,7 +94,7 @@ class SongsModule extends VuexModule {
             //@ts-ignore
             form_data.append(key, payload[key] || "");
         });
-        return await fetch(`${process.env.VUE_APP_BASE_URL}/songs/create`, {
+        return await fetch(`${process.env.VUE_APP_BASE_URL}/songs`, {
             method: 'POST',
             body: form_data,
             cache: 'no-cache',
