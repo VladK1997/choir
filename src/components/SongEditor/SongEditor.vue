@@ -42,7 +42,6 @@
     </label>
     <Button type="button" @click="uploadSong">Save</Button>
   </form>
-  <Loading :model="isLoading"/>
 </div>
 </template>
 <script lang="ts">
@@ -56,7 +55,7 @@ import Loading from "@/components/Loading/Loading.vue";
 
 @Component({
   name: "SongEditor",
-  components: {Loading, Button},
+  components: {Button},
 })
 export default class SongEditor extends Vue {
   song = {
@@ -105,9 +104,6 @@ export default class SongEditor extends Vue {
   }
   get songs(): any {
     return SongsModule.getSongs;
-  }
-  get isLoading(): boolean {
-    return SongsModule.isSongLoading;
   }
   @Watch("$route", { immediate: true, deep: true})
   protected onRouteChange(newValue: any) {

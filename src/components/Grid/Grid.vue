@@ -15,6 +15,7 @@
         title="Words"
         :words="currentWords"
     />
+    <Loading :model="isLoading"/>
   </div>
 </template>
 <script lang="ts">
@@ -24,20 +25,16 @@ import SongCard from "@/components/Grid/SongCard/SongCard.vue";
 import ItemsModal from "@/components/Grid/ItemsModal/ItemsModal.vue";
 import WordsModal from "@/components/Grid/WordsModal/WordsModal.vue";
 import SongsModule from "@/store/songs";
+import Loading from "@/components/Loading/Loading.vue";
 @Component({
   name: "Grid",
-  components: {WordsModal, ItemsModal, SongCard},
+  components: {Loading, WordsModal, ItemsModal, SongCard},
 })
 export default class Grid extends Vue {
   modalItems = [];
   currentWords = "";
   isItemsModalOpened = false;
   isWordsModalOpened = false;
-  openModalItems(items: any): void {
-    console.log(items);
-    this.modalItems = items;
-    this.isItemsModalOpened = true;
-  }
   openModal(modalName: string, data: any) {
     console.log(modalName, data);
     switch (modalName) {
@@ -53,6 +50,9 @@ export default class Grid extends Vue {
   }
   get songs(): any {
     return SongsModule.getSongs;
+  }
+  get isLoading(): boolean {
+    return SongsModule.isSongLoading;
   }
   mounted(): void {
     SongsModule.fetchSongs();
