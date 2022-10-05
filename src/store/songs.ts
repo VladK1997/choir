@@ -57,7 +57,7 @@ class SongsModule extends VuexModule {
             body: form_data,
             cache: 'no-cache',
             headers: {
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "no-cors"
             }
         })
             .then(data => {
@@ -75,7 +75,7 @@ class SongsModule extends VuexModule {
             method: 'DELETE',
             cache: 'no-cache',
             headers: {
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "no-cors"
             }
         })
             .then(data => {
@@ -99,7 +99,7 @@ class SongsModule extends VuexModule {
             body: form_data,
             cache: 'no-cache',
             headers: {
-                "Access-Control-Allow-Origin": "*"
+                "Access-Control-Allow-Origin": "no-cors"
             }
         })
             .then(data => {
